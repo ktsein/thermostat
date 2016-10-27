@@ -22,65 +22,50 @@ describe('Thermostat', function () {
   });
 
   it('can be turned up', function () {
-    thermostat.up();
-    expect(thermostat.up()).toEqual(21);
+    expect(thermostat.up(4)).toEqual(24);
   });
 
   it('can be turned down', function () {
-    thermostat.down();
-    expect(thermostat.down()).toEqual(19);
+    expect(thermostat.down(4)).toEqual(16);
   });
 
   it('has a minimum temperature of 10', function () {
-    for(var i = 0; i < 11; i++){
-      thermostat.down();
-    }
-    expect(thermostat.down()).toEqual('Minimum temperature is 10 degrees');
+    expect(thermostat.down(11)).toEqual('Minimum temperature is 10 degrees');
   });
 
   it('sets the powersaving mode to on', function () {
-    thermostat.setPowersaverOn();
+    thermostat.setPowersaver(true);
     expect(thermostat.powersaver).toBe(true);
   });
 
   it('sets the powersaving mode to off', function () {
-    thermostat.setPowersaverOff();
+    thermostat.setPowersaver(false);
     expect(thermostat.powersaver).toBe(false);
   });
 
   it('changes the default maximum temperature to 32', function () {
-    thermostat.setPowersaverOff();
+    thermostat.setPowersaver(false);
     expect(thermostat.maximumtemp).toEqual(32);
   });
 
   it('has a maximum temperature of 25 in powersaver mode', function () {
-    thermostat.setPowersaverOn();
-    for(var i = 0; i < 6; i++){
-      thermostat.up();
-    }
-    expect(thermostat.up()).toEqual('Stop it, you\'re ruining the planet!');
+    thermostat.setPowersaver(true);
+    expect(thermostat.up(6)).toEqual('Stop it, you\'re ruining the planet!');
   });
 
   it('has a maximum temperature of 32 degrees', function () {
-    thermostat.setPowersaverOff();
-    for(var i = 0; i < 14; i++){
-      thermostat.up();
-    }
-    expect(thermostat.up()).toEqual('Stop it, you\'re ruining the planet!');
+    thermostat.setPowersaver(false);
+    expect(thermostat.up(13)).toEqual('Stop it, you\'re ruining the planet!');
   });
 
   it('resets the temperature to 20', function () {
-    for(var i = 0; i < 6; i++){
-      thermostat.up();
-    }
+    thermostat.up(2);
     thermostat.reset();
     expect(thermostat.temperature).toEqual(20);
   });
 
   it('returns low-usage when temperature is below 18', function () {
-    for(var i = 0; i < 6; i++){
-      thermostat.down();
-    }
+    thermostat.down(3);
     expect(thermostat.usage()).toEqual('Low-usage');
   });
 
@@ -89,9 +74,7 @@ describe('Thermostat', function () {
   });
 
   it('returns high-usage when temperature is higher than 24', function () {
-    for(var i = 0; i < 6; i++){
-      thermostat.up();
-    }
+    thermostat.up(5);
     expect(thermostat.usage()).toEqual('High-usage');
   });
 
