@@ -6,18 +6,20 @@ function Thermostat() {
 }
 
 Thermostat.prototype.up = function () {
-  if (this.temperature > this.maximumtemp) {
+  if (this.temperature >= this.maximumtemp) {
     return('Stop it, you\'re ruining the planet!');
   } else {
-    return this.temperature ++;
+    this.temperature ++;
+    return this.temperature;
   }
 };
 
 Thermostat.prototype.down = function () {
-  if (this.temperature < this.MINIMUMTEMP ) {
+  if (this.temperature <= this.MINIMUMTEMP ) {
     return 'Minimum temperature is 10 degrees';
   } else {
-  return this.temperature --;
+    this.temperature --;
+  return this.temperature;
 }
 };
 
