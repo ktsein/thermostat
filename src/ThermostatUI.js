@@ -8,6 +8,7 @@ $(document).ready(function(){
     $("#outside_temperature").text(result.main.temp + " ˚C");
   });
 
+  var cityName = $("#citylist").val();
   $("#citylist").change(function(){
     var cityName = $("#citylist").val();
     console.log(cityName);
@@ -41,5 +42,22 @@ $(document).ready(function(){
   function updateTemperature(){
     $("#temperature").text(thermostat.temperature + " ˚C");
     $("#temperature").attr('class', thermostat.usage());
+    sendTemperature();
   }
+function sendTemperature(){
+
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:4567/temperature",
+    data: "temperature="+JSON.stringify(thermostat.temperature),
+    datatype: "html",
+  });
+}
+
+
+
+
+  // ("http://localhost:4567/temperature", "temperature=" JSON.stringify({temperature: thermostat.temperature})
+  // );
+
 });
