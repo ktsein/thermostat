@@ -4,8 +4,12 @@ $(document).ready(function(){
   var api_key = "90e9089cddc68f01cf03c6169b4b0ed5";
   updateTemperature();
 
-  $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=" + "London" + "&units=metric&APPID=" + api_key,function(result){
+  $.get("http://api.openweathermap.org/data/2.5/weather?q=" + "London" + "&units=metric&APPID=" + api_key,function(result){
     $("#outside_temperature").text(result.main.temp + " ˚C");
+  });
+
+  $.get("http://http://localhost:4567/temperature", function(response){
+    thermostat.temperature = response.temperature;
   });
 
   var cityName = $("#citylist").val();
@@ -42,22 +46,24 @@ $(document).ready(function(){
   function updateTemperature(){
     $("#temperature").text(thermostat.temperature + " ˚C");
     $("#temperature").attr('class', thermostat.usage());
-    sendTemperature();
+    $.post("http://http://localhost:4567/temperature",{temperature: thermostat.temperature});
   }
-function sendTemperature(){
 
-  $.ajax({
-    type: "POST",
-    url: "http://localhost:4567/temperature",
-    data: "temperature="+JSON.stringify(thermostat.temperature),
-    datatype: "html",
-  });
-}
+});
+
+
+// function sendTemperature(){
+//
+//   $.ajax({
+//     type: "POST",
+//     url: "http://localhost:4567/temperature",
+//     data: "temperature="+JSON.stringify(thermostat.temperature),
+//     datatype: "html",
+//   });
+// }
 
 
 
 
   // ("http://localhost:4567/temperature", "temperature=" JSON.stringify({temperature: thermostat.temperature})
   // );
-
-});

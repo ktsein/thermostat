@@ -6,15 +6,16 @@ class Thermostat_Server < Sinatra::Base
   enable :sessions
 
   get '/temperature' do
-    session[:data].to_json
+    headers 'Access-Control-Allow-Origin' => '*'
+    temperature = session[:temperature] || 20.to_s
+
+    content_type :json
+    { temperature: temperature }.to_json
   end
 
   post '/temperature' do
     headers 'Access-Control-Allow-Origin' => '*'
-    temperature = params[:temperature]
-    p temperature
-
-    # session[:data] = data
+    session[:temperature] = params[:temperature]
   end
 
   # start the server if ruby file executed directly
